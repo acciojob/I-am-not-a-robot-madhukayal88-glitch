@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>I am not a robot</title>
+  <style>
+    img {
+      width: 100px;
+      margin: 5px;
+      cursor: pointer;
+      border: 2px solid transparent;
+    }
+    .selected {
+      border: 2px solid red;
+    }
+    #reset, #verify {
+      display: none;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <h3 id="h">
+    Please click on the identical tiles to verify that you are not a robot.
+  </h3>
+
+  <div id="images">
+    <img class="img1" src="https://picsum.photos/100?1">
+    <img class="img2" src="https://picsum.photos/100?2">
+    <img class="img3" src="https://picsum.photos/100?3">
+    <img class="img4" src="https://picsum.photos/100?4">
+    <img class="img5" src="https://picsum.photos/100?1">
+  </div>
+
+  <button id="reset">Reset</button>
+  <button id="verify">Verify</button>
+
+  <p id="para"></p>
+
+  <script>
+    let selected = [];
+
+    const images = document.querySelectorAll("img");
+    const resetBtn = document.getElementById("reset");
+    const verifyBtn = document.getElementById("verify");
+    const para = document.getElementById("para");
+
+    images.forEach(img => {
+      img.addEventListener("click", () => {
+        if (selected.includes(img)) return;
+
+        img.classList.add("selected");
+        selected.push(img);
+
+        if (selected.length === 1) {
+          resetBtn.style.display = "inline-block";
+        }
+
+        if (selected.length === 2) {
+          verifyBtn.style.display = "inline-block";
+        }
+      });
+    });
+
+    resetBtn.addEventListener("click", () => {
+      selected.forEach(img => img.classList.remove("selected"));
+      selected = [];
+      resetBtn.style.display = "none";
+      verifyBtn.style.display = "none";
+      para.textContent = "";
+    });
+
+    verifyBtn.addEventListener("click", () => {
+      if (selected[0].src === selected[1].src) {
+        para.textContent = "You are a human. Congratulations!";
+      } else {
+        para.textContent = "We can't verify you as a human. You selected the non-identical tiles.";
+      }
+    });
+  </script>
+
+</body>
+</html>
